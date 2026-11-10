@@ -1,0 +1,56 @@
+---
+import "../styles/global.css";
+
+interface Props {
+  title: string;
+  description?: string;
+  current?: "home" | "writing";
+}
+
+const {
+  title,
+  description = "Lucas Groves, data engineer. Streaming pipelines, Postgres, Databricks, and Tributary, a research platform for SEC filings.",
+  current,
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Literata:opsz,wght@7..72,400;7..72,500;7..72,600&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="wrap">
+      <header>
+        <div class="site-header">
+          <a class="name" href="/">Lucas Groves</a>
+          <nav class="nav" aria-label="Main">
+            <a href="/writing/" aria-current={current === "writing" ? "page" : undefined}>Writing</a>
+            <a href="https://tributary.lucasgroves.dev">Tributary</a>
+            <a href="https://github.com/LucasGroves0102">GitHub</a>
+            <a href="https://www.linkedin.com/in/lucas-groves-38b421268">LinkedIn</a>
+          </nav>
+        </div>
+        <div class="band" aria-hidden="true"><span></span><span></span><span></span></div>
+      </header>
+      <main>
+        <slot />
+      </main>
+      <footer class="site-footer">
+        <p>Lucas Groves, Phoenix, Arizona. Open to relocation and remote work.</p>
+      </footer>
+    </div>
+  </body>
+</html>

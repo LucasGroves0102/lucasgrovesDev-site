@@ -1,0 +1,34 @@
+---
+import Base from "../../layouts/Base.astro";
+
+const posts = Object.values(import.meta.glob("./*.md", { eager: true }))
+  .map((post: any) => ({
+    url: post.url,
+    title: post.frontmatter.title,
+    summary: post.frontmatter.summary,
+    date: post.frontmatter.date,
+  }))
+  .sort((a, b) => new Date(b.date).valueOf() - new Date(a.date).valueOf());
+
+const fmt = (d: string) =>
+  new Date(d).toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    timeZone: "UTC",
+  });
+---
+
+<Base title="Writing | Lucas Groves" current="writing">
+  <h1>Writing</h1>
+  <p class="lede">Notes on what I'm building, why, and what I'm learning along the way.</p>
+  <ul class="posts">
+    {posts.map((p) => (
+      <li>
+        <a href={p.url}>{p.title}</a>
+        <span class="date">{fmt(p.date)}</span>
+        {p.summary && <p class="quiet">{p.summary}</p>}
+      </li>
+    ))}
+  </ul>
+</Base>
