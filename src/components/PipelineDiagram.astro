@@ -63,10 +63,12 @@ const route2 = "M130 68 H160 V48 H265 V268 H370 V308 H400";
     <text class="sub" x="22" y="375">Every read passes two permission layers: OpenFGA and Postgres row-level security</text>
   </g>
 
-  <circle class="pulse" r="4">
+  <circle class="pulse" r="4" cx="0" cy="0" visibility="hidden">
+    <set attributeName="visibility" to="visible" begin="0s" />
     <animateMotion dur="4.5s" repeatCount="indefinite" path={route} />
   </circle>
-  <circle class="pulse" r="4">
+  <circle class="pulse" r="4" cx="0" cy="0" visibility="hidden">
+    <set attributeName="visibility" to="visible" begin="2.25s" />
     <animateMotion dur="4.5s" begin="2.25s" repeatCount="indefinite" path={route2} />
   </circle>
 </svg>
