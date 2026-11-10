@@ -1,36 +1,16 @@
 ---
 import Base from "../layouts/Base.astro";
+import PipelineDiagram from "../components/PipelineDiagram.astro";
 
-const posts = Object.values(
-  import.meta.glob("./writing/*.md", { eager: true }),
-)
+const posts = Object.values(import.meta.glob("./writing/*.md", { eager: true }))
   .map((post: any) => ({
     url: post.url,
     title: post.frontmatter.title,
+    summary: post.frontmatter.summary,
     date: post.frontmatter.date,
   }))
-  .sort((a, b) => new Date(b.date).valueOf() - new Date(a.date).valueOf());
-
-const repo = "https://github.com/LucasGroves0102/tributary";
-
-const facts = [
-  {
-    text: "Every new SEC filing in the database 45 seconds after EDGAR accepts it at the median, 1.6 minutes at p95",
-    proof: `${repo}#readme`,
-  },
-  {
-    text: "128 of 128 figures in the AI assistant's answers traced back to a filing or XBRL fact",
-    proof: `${repo}/blob/main/tests/citations/report.md`,
-  },
-  {
-    text: "Revoked access gone from every derived table in under 0.2 seconds, checked on every CI run",
-    proof: `${repo}/blob/main/tests/propagation/report.md`,
-  },
-  {
-    text: "Filing parser rewritten in Rust: 8.8x faster, zero output differences on 57,000 fuzzed documents",
-    proof: `${repo}/blob/main/benchmarks/README.md`,
-  },
-];
+  .sort((a, b) => new Date(b.date).valueOf() - new Date(a.date).valueOf())
+  .slice(0, 3);
 
 const fmt = (d: string) =>
   new Date(d).toLocaleDateString("en-US", {
@@ -39,66 +19,228 @@ const fmt = (d: string) =>
     day: "numeric",
     timeZone: "UTC",
   });
+
+const repo = "https://github.com/LucasGroves0102/tributary";
+const demo = "https://tributary.lucasgroves.dev";
+const github = "https://github.com/LucasGroves0102";
+const linkedin = "https://www.linkedin.com/in/lucas-groves-38b421268";
+
+const evidence = [
+  {
+    figure: "45 s / 1.6 min",
+    text: "Median and p95 time from EDGAR accepting a filing to it landing in the database",
+    href: `${repo}#readme`,
+  },
+  {
+    figure: "128 of 128",
+    text: "Figures in the AI assistant's answers traced back to a filing or XBRL fact",
+    href: `${repo}/blob/main/tests/citations/report.md`,
+  },
+  {
+    figure: "< 0.2 s",
+    text: "For revoked access to disappear from every derived table, checked on every CI run",
+    href: `${repo}/blob/main/tests/propagation/report.md`,
+  },
+  {
+    figure: "8.8x",
+    text: "Faster filing parser after a Rust rewrite, with zero output differences across 256 real and 57,000 generated documents",
+    href: `${repo}/blob/main/benchmarks/README.md`,
+  },
+];
+
+const stack = [
+  "Python",
+  "Rust",
+  "TypeScript",
+  "PostgreSQL",
+  "Kafka",
+  "Debezium",
+  "OpenFGA",
+  "Kubernetes",
+  "Flux",
+  "Terraform",
+  "React",
+  "Claude API",
+];
 ---
 
-<Base title="Lucas Groves, data engineer" current="home">
-  <h1>I build data platforms that people can trust with their numbers.</h1>
-  <p class="lede">
-    I'm a data engineer in Phoenix. I work on streaming pipelines, Postgres, and Databricks, and
-    I care about the unglamorous parts: data that's correct, provenance on every row, and systems
-    that recover on their own.
-  </p>
+<Base title="Lucas Groves | Data engineer" current="home">
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="container">
+      <div>
+        <h1 id="hero-title">I build data platforms people can trust with their numbers.</h1>
+        <p>
+          Data engineer in Phoenix. I build streaming pipelines, Postgres systems and Databricks
+          workflows, and I built Tributary, a live research platform for SEC filings.
+        </p>
+        <div class="actions">
+          <a class="btn btn-primary" href={demo}>Try Tributary</a>
+          <a class="btn btn-ghost" href={github}>View GitHub</a>
+        </div>
+      </div>
+      <PipelineDiagram />
+    </div>
+  </section>
 
-  <h2>Tributary</h2>
-  <p>
-    <a href="https://tributary.lucasgroves.dev">Tributary</a> is a research platform for SEC filings
-    that I built and run on my own server. It streams every new filing from EDGAR into a
-    bronze, silver and gold Postgres model, standardizes financials for 6,000+ companies, and gives
-    analysts a workflow from filings to a checked investment thesis. Its AI assistant answers only
-    from data you're allowed to see, and every figure it states is verified against the source.
-  </p>
-  <ul class="facts">
-    {facts.map((f) => (
-      <li>
-        <span>{f.text}</span>
-        <a class="proof" href={f.proof}>See the evidence</a>
-      </li>
-    ))}
-  </ul>
-  <p>
-    <a href="https://tributary.lucasgroves.dev">Try the live demo</a>, or
-    <a href={repo}>read the code</a>.
-  </p>
+  <section id="tributary" aria-labelledby="tributary-title">
+    <div class="container">
+      <div class="section-head">
+        <h2 id="tributary-title">Tributary</h2>
+        <p>A research platform for SEC filings, designed, built and operated end to end.</p>
+      </div>
+      <div class="feature">
+        <div>
+          <p>
+            Tributary streams every new filing from EDGAR into bronze, silver and gold layers in
+            Postgres, with quality checks on every load and provenance on every row. It standardizes
+            financials for more than 6,000 companies and parses hundreds of thousands of 10-Ks,
+            10-Qs and 8-Ks into searchable sections.
+          </p>
+          <p>
+            On top sits a workspace for real company research: statements, earnings releases, what
+            changed since the last filing, peers, a model and a written thesis that can be checked
+            against the filings. Its AI assistant answers only from data the person is allowed to
+            see, and every figure it states is verified against the source before it's shown.
+          </p>
+          <p>
+            It runs on a single self-managed Kubernetes server, deployed from Git, with no open
+            inbound ports and backups that are restored and checked every week.
+          </p>
+          <ul class="stack" aria-label="Technologies">
+            {stack.map((s) => <li>{s}</li>)}
+          </ul>
+          <p>
+            <a href={demo}>Try the live demo</a> or <a href={repo}>read the code</a>.
+          </p>
+        </div>
+        <aside class="evidence" aria-labelledby="evidence-title">
+          <h3 id="evidence-title">Measured, with the evidence</h3>
+          <ul>
+            {evidence.map((e) => (
+              <li>
+                <strong>{e.figure}</strong>
+                <span>{e.text}. </span>
+                <a href={e.href}>See the report</a>
+              </li>
+            ))}
+          </ul>
+        </aside>
+      </div>
+    </div>
+  </section>
 
-  <h2>Work</h2>
-  <div class="role">
-    <h3>Data Engineer II, Sprouts Farmers Market</h3>
-    <p class="quiet">June 2026 to present</p>
-    <p>Campaign measurement and decisioning pipelines on Azure Databricks.</p>
-  </div>
-  <div class="role">
-    <h3>Software Engineer, Wise Pelican</h3>
-    <p class="quiet">December 2025 to June 2026</p>
-    <p>
-      Proposed and led a move from cloud to on-prem that cut infrastructure spend about 64%, built
-      the cluster, consolidated data on ~140M U.S. properties into one Postgres database, and
-      replaced 10-hour refreshes with a 25-minute incremental pipeline.
-    </p>
-  </div>
-  <div class="role">
-    <h3>Software Engineer Intern, Western Semiconductor</h3>
-    <p class="quiet">April to September 2024</p>
-    <p>C++ and Python work on an early-stage chip design toolchain.</p>
-  </div>
-  <p class="quiet">B.S. in Mathematics, Arizona State University, 2025.</p>
+  <section id="experience" aria-labelledby="experience-title">
+    <div class="container">
+      <div class="section-head">
+        <h2 id="experience-title">Experience</h2>
+      </div>
+      <ol class="timeline">
+        <li>
+          <div class="when">June 2026 to present</div>
+          <div>
+            <h3>Data Engineer II</h3>
+            <p class="org">Sprouts Farmers Market, Phoenix</p>
+            <ul>
+              <li>Builds campaign measurement and decisioning pipelines on Azure Databricks.</li>
+              <li>Replaced a vendor-built measurement system with in-house pipelines.</li>
+            </ul>
+          </div>
+        </li>
+        <li>
+          <div class="when">December 2025 to June 2026</div>
+          <div>
+            <h3>Software Engineer</h3>
+            <p class="org">Wise Pelican, Tempe</p>
+            <ul>
+              <li>Proposed and led a move from cloud to on-prem that cut infrastructure spend about 64%.</li>
+              <li>Built and ran the cluster: Proxmox, Ceph, high-availability failover and Postgres backups.</li>
+              <li>Consolidated data on about 140 million U.S. properties into one partitioned Postgres database.</li>
+              <li>Replaced 10-hour refreshes with an incremental medallion pipeline that averages 25 minutes.</li>
+            </ul>
+          </div>
+        </li>
+        <li>
+          <div class="when">April to September 2024</div>
+          <div>
+            <h3>Software Engineer Intern</h3>
+            <p class="org">Western Semiconductor, Tempe</p>
+            <ul>
+              <li>Contributed to a C++ synthesis tool and parasitic-extraction simulations at an early-stage chip design software startup.</li>
+            </ul>
+          </div>
+        </li>
+        <li>
+          <div class="when">December 2025</div>
+          <div>
+            <h3>B.S. in Mathematics</h3>
+            <p class="org">Arizona State University</p>
+          </div>
+        </li>
+      </ol>
+    </div>
+  </section>
 
-  <h2>Writing</h2>
-  <ul class="posts">
-    {posts.map((p) => (
-      <li>
-        <a href={p.url}>{p.title}</a>
-        <span class="date">{fmt(p.date)}</span>
-      </li>
-    ))}
-  </ul>
+  <section aria-labelledby="skills-title">
+    <div class="container">
+      <div class="section-head">
+        <h2 id="skills-title">Skills</h2>
+      </div>
+      <dl class="skills">
+        <div>
+          <dt>Languages</dt>
+          <dd>Python, SQL and PL/pgSQL, Rust, PySpark, TypeScript, Bash, C++</dd>
+        </div>
+        <div>
+          <dt>Data</dt>
+          <dd>Databricks, Spark, Kafka, Debezium, PostgreSQL, PostGIS, Elasticsearch, MongoDB</dd>
+        </div>
+        <div>
+          <dt>Infrastructure</dt>
+          <dd>Azure, AWS, Kubernetes, Helm, Flux, Terraform, Docker, GitHub Actions, Prometheus, Grafana</dd>
+        </div>
+        <div>
+          <dt>AI and ML</dt>
+          <dd>Claude API tool-use agents, LLM evaluation, PyTorch, XGBoost, scikit-learn</dd>
+        </div>
+      </dl>
+    </div>
+  </section>
+
+  <section aria-labelledby="writing-title">
+    <div class="container">
+      <div class="section-head">
+        <h2 id="writing-title">Writing</h2>
+        <p>What I'm building, why, and what I'm learning along the way.</p>
+      </div>
+      <ul class="posts">
+        {posts.map((p) => (
+          <li>
+            <a class="post-link" href={p.url}>
+              <span class="title">{p.title}</span>
+              <span class="date">{fmt(p.date)}</span>
+              {p.summary && <span class="summary">{p.summary}</span>}
+            </a>
+          </li>
+        ))}
+      </ul>
+      <p><a href="/writing/">All writing</a></p>
+    </div>
+  </section>
+
+  <section id="contact" class="contact" aria-labelledby="contact-title">
+    <div class="container">
+      <div class="section-head">
+        <h2 id="contact-title">Get in touch</h2>
+        <p>
+          Happy to talk about data platforms, financial data, or anything you saw here. LinkedIn is
+          the fastest way to reach me.
+        </p>
+      </div>
+      <div class="actions">
+        <a class="btn btn-primary" href={linkedin}>Message me on LinkedIn</a>
+        <a class="btn btn-ghost" href={github}>GitHub</a>
+        <a class="btn btn-ghost" href={demo}>Tributary</a>
+      </div>
+    </div>
+  </section>
 </Base>

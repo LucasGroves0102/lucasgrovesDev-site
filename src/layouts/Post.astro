@@ -12,10 +12,14 @@ const date = new Date(frontmatter.date).toLocaleDateString("en-US", {
 ---
 
 <Base title={`${frontmatter.title} | Lucas Groves`} description={frontmatter.summary} current="writing">
-  <article class="post">
-    <h1>{frontmatter.title}</h1>
-    <p class="meta">{date}</p>
-    <slot />
-  </article>
-  <p class="quiet"><a href="/writing/">All writing</a></p>
+  <div class="post-page">
+    <div class="container">
+      <article>
+        <h1>{frontmatter.title}</h1>
+        <p class="meta">{date}</p>
+        <slot />
+      </article>
+      <a class="back" href="/writing/">All writing</a>
+    </div>
+  </div>
 </Base>

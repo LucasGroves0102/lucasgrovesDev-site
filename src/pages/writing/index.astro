@@ -20,15 +20,23 @@ const fmt = (d: string) =>
 ---
 
 <Base title="Writing | Lucas Groves" current="writing">
-  <h1>Writing</h1>
-  <p class="lede">Notes on what I'm building, why, and what I'm learning along the way.</p>
-  <ul class="posts">
-    {posts.map((p) => (
-      <li>
-        <a href={p.url}>{p.title}</a>
-        <span class="date">{fmt(p.date)}</span>
-        {p.summary && <p class="quiet">{p.summary}</p>}
-      </li>
-    ))}
-  </ul>
+  <section>
+    <div class="container">
+      <div class="section-head">
+        <h1>Writing</h1>
+        <p>What I'm building, why, and what I'm learning along the way.</p>
+      </div>
+      <ul class="posts">
+        {posts.map((p) => (
+          <li>
+            <a class="post-link" href={p.url}>
+              <span class="title">{p.title}</span>
+              <span class="date">{fmt(p.date)}</span>
+              {p.summary && <span class="summary">{p.summary}</span>}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
 </Base>

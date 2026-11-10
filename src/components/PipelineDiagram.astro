@@ -1,0 +1,72 @@
+---
+// Tributary's data flow: EDGAR -> bronze -> silver -> gold -> workspace and assistant.
+// One animated pulse traces the path on loop; it is hidden when reduced motion is preferred.
+const route = "M130 68 H160 V48 H265 V268 H370 V208 H400";
+const route2 = "M130 68 H160 V48 H265 V268 H370 V308 H400";
+---
+
+<svg class="diagram" viewBox="0 0 540 392" role="img" aria-labelledby="diagram-title diagram-desc">
+  <title id="diagram-title">How Tributary moves data</title>
+  <desc id="diagram-desc">
+    New filings from SEC EDGAR land in a bronze layer of raw filings, are typed into silver XBRL facts, and
+    standardized into gold financials, which feed the analyst workspace and an AI assistant whose figures are
+    verified. Two permission layers guard every read.
+  </desc>
+
+  <path class="wire" d="M130 68 H160 V48 H190" />
+  <path class="wire" d="M265 76 V130" />
+  <path class="wire" d="M265 186 V240" />
+  <path class="wire" d="M340 268 H370 V208 H400" />
+  <path class="wire" d="M340 268 H370 V308 H400" />
+
+  <g class="node">
+    <rect x="10" y="40" width="120" height="56" rx="6" />
+    <text x="22" y="64">SEC EDGAR</text>
+    <text class="sub" x="22" y="82">Every new filing</text>
+  </g>
+
+  <g class="node">
+    <rect x="190" y="20" width="150" height="56" rx="6" />
+    <rect x="190" y="20" width="5" height="56" rx="2" fill="var(--bronze)" stroke="none" />
+    <text x="206" y="44">Bronze</text>
+    <text class="sub" x="206" y="62">Raw filings, hashed</text>
+  </g>
+
+  <g class="node">
+    <rect x="190" y="130" width="150" height="56" rx="6" />
+    <rect x="190" y="130" width="5" height="56" rx="2" fill="var(--silver)" stroke="none" />
+    <text x="206" y="154">Silver</text>
+    <text class="sub" x="206" y="172">Typed XBRL facts</text>
+  </g>
+
+  <g class="node">
+    <rect x="190" y="240" width="150" height="56" rx="6" />
+    <rect x="190" y="240" width="5" height="56" rx="2" fill="var(--gold)" stroke="none" />
+    <text x="206" y="264">Gold</text>
+    <text class="sub" x="206" y="282">Standardized financials</text>
+  </g>
+
+  <g class="node">
+    <rect x="400" y="180" width="132" height="56" rx="6" />
+    <text x="412" y="204">Analyst workspace</text>
+    <text class="sub" x="412" y="222">Models, theses, diffs</text>
+  </g>
+
+  <g class="node">
+    <rect x="400" y="280" width="132" height="56" rx="6" />
+    <text x="412" y="304">AI assistant</text>
+    <text class="sub" x="412" y="322">Every figure verified</text>
+  </g>
+
+  <g class="node">
+    <rect x="10" y="356" width="522" height="30" rx="6" />
+    <text class="sub" x="22" y="375">Every read passes two permission layers: OpenFGA and Postgres row-level security</text>
+  </g>
+
+  <circle class="pulse" r="4">
+    <animateMotion dur="4.5s" repeatCount="indefinite" path={route} />
+  </circle>
+  <circle class="pulse" r="4">
+    <animateMotion dur="4.5s" begin="2.25s" repeatCount="indefinite" path={route2} />
+  </circle>
+</svg>
